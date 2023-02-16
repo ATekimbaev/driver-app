@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'create_order_page/create_order_page.dart';
+import 'drivers_page/drivers_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,12 +25,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> screens = [
-    const Center(
-      child: Text(
-        '1',
-        style: AppFonts.w700s25,
-      ),
-    ),
+    const DriversPage(),
     const Center(
       child: Text(
         '2',

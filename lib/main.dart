@@ -4,6 +4,8 @@ import 'package:driver/feature/auth/repository/auth_repository.dart';
 import 'package:driver/feature/home_page/create_order_page/create_order_bloc/create_order_bloc.dart';
 import 'package:driver/feature/home_page/create_order_page/repositories/get_city_repo.dart';
 import 'package:driver/feature/home_page/create_order_page/repositories/send_order_repo.dart';
+import 'package:driver/feature/home_page/drivers_page/bloc/get_drivers_order_bloc.dart';
+import 'package:driver/feature/home_page/drivers_page/repository/get_oreder_repository.dart';
 import 'package:driver/feature/registration/bloc/registration_bloc.dart';
 import 'package:driver/feature/registration/repositories/registration_repository.dart';
 import 'package:driver/feature/set_users_data/bloc/set_users_data_bloc.dart';
@@ -58,6 +60,11 @@ class MyApp extends StatelessWidget {
             dio: RepositoryProvider.of<DioSettings>(context).dio,
           ),
         ),
+        RepositoryProvider(
+          create: (context) => GetOrederRepository(
+            dio: RepositoryProvider.of<DioSettings>(context).dio,
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -86,6 +93,11 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => CreateOrderBloc(
               repository: RepositoryProvider.of<SendOrderRepository>(context),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => GetDriversOrderBloc(
+              repository: RepositoryProvider.of<GetOrederRepository>(context),
             ),
           ),
         ],
