@@ -1,8 +1,9 @@
 import 'package:driver/core%20/dio_settings.dart';
 import 'package:driver/feature/auth/bloc/auth_bloc.dart';
 import 'package:driver/feature/auth/repository/auth_repository.dart';
-import 'package:driver/feature/home_page/create_order_page/bloc/get_city_bloc.dart';
+import 'package:driver/feature/home_page/create_order_page/create_order_bloc/create_order_bloc.dart';
 import 'package:driver/feature/home_page/create_order_page/repositories/get_city_repo.dart';
+import 'package:driver/feature/home_page/create_order_page/repositories/send_order_repo.dart';
 import 'package:driver/feature/registration/bloc/registration_bloc.dart';
 import 'package:driver/feature/registration/repositories/registration_repository.dart';
 import 'package:driver/feature/set_users_data/bloc/set_users_data_bloc.dart';
@@ -15,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'feature/auth/auth_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'feature/home_page/create_order_page/get_city_bloc/get_city_bloc.dart';
 import 'feature/splash_screen.dart/splash_screen.dart';
 
 void main(List<String> args) {
@@ -51,6 +53,11 @@ class MyApp extends StatelessWidget {
             dio: RepositoryProvider.of<DioSettings>(context).dio,
           ),
         ),
+        RepositoryProvider(
+          create: (context) => SendOrderRepository(
+            dio: RepositoryProvider.of<DioSettings>(context).dio,
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -74,6 +81,11 @@ class MyApp extends StatelessWidget {
             create: (context) => SetUsersDataBloc(
               repository:
                   RepositoryProvider.of<SetUsersDataRepository>(context),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => CreateOrderBloc(
+              repository: RepositoryProvider.of<SendOrderRepository>(context),
             ),
           ),
         ],
