@@ -3,10 +3,10 @@ class OrderModel {
   int? totalPages;
   int? limit;
   int? totalCount;
-  List<Results>? results;
+  List<UserInfo>? userInfo;
 
   OrderModel(
-      {this.page, this.totalPages, this.limit, this.totalCount, this.results});
+      {this.page, this.totalPages, this.limit, this.totalCount, this.userInfo});
 
   OrderModel.fromJson(Map<String, dynamic> json) {
     page = json['page'];
@@ -14,9 +14,9 @@ class OrderModel {
     limit = json['limit'];
     totalCount = json['total_count'];
     if (json['results'] != null) {
-      results = <Results>[];
+      userInfo = <UserInfo>[];
       json['results'].forEach((v) {
-        results!.add(new Results.fromJson(v));
+        userInfo!.add(new UserInfo.fromJson(v));
       });
     }
   }
@@ -27,51 +27,54 @@ class OrderModel {
     data['total_pages'] = this.totalPages;
     data['limit'] = this.limit;
     data['total_count'] = this.totalCount;
-    if (this.results != null) {
-      data['results'] = this.results!.map((v) => v.toJson()).toList();
+    if (this.userInfo != null) {
+      data['results'] = this.userInfo!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Results {
+class UserInfo {
   String? id;
   User? user;
-  CityFrom? cityFrom;
+  GetCityFrom? getCityFrom;
   String? addressFrom;
-  CityFrom? cityTo;
+  GetCityFrom? getCityto;
   String? addressTo;
   int? price;
   String? note;
   String? date;
   String? createdAt;
+  String? type;
 
-  Results(
+  UserInfo(
       {this.id,
       this.user,
-      this.cityFrom,
+      this.getCityFrom,
       this.addressFrom,
-      this.cityTo,
+      this.getCityto,
       this.addressTo,
       this.price,
       this.note,
       this.date,
       this.createdAt});
 
-  Results.fromJson(Map<String, dynamic> json) {
+  UserInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
-    cityFrom = json['city_from'] != null
-        ? new CityFrom.fromJson(json['city_from'])
+    getCityFrom = json['city_from'] != null
+        ? new GetCityFrom.fromJson(json['city_from'])
         : null;
     addressFrom = json['address_from'];
-    cityTo =
-        json['city_to'] != null ? new CityFrom.fromJson(json['city_to']) : null;
+    getCityFrom = json['city_to'] != null
+        ? new GetCityFrom.fromJson(json['city_to'])
+        : null;
     addressTo = json['address_to'];
     price = json['price'];
     note = json['note'];
     date = json['date'];
     createdAt = json['created_at'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -80,18 +83,19 @@ class Results {
     if (this.user != null) {
       data['user'] = this.user!.toJson();
     }
-    if (this.cityFrom != null) {
-      data['city_from'] = this.cityFrom!.toJson();
+    if (this.getCityFrom != null) {
+      data['city_from'] = this.getCityFrom!.toJson();
     }
     data['address_from'] = this.addressFrom;
-    if (this.cityTo != null) {
-      data['city_to'] = this.cityTo!.toJson();
+    if (this.getCityto != null) {
+      data['city_to'] = this.getCityto!.toJson();
     }
     data['address_to'] = this.addressTo;
     data['price'] = this.price;
     data['note'] = this.note;
     data['date'] = this.date;
     data['created_at'] = this.createdAt;
+    data['type'] = this.type;
     return data;
   }
 }
@@ -118,15 +122,15 @@ class User {
   }
 }
 
-class CityFrom {
+class GetCityFrom {
   String? id;
   String? name;
   String? fullName;
-  Null? parent;
+  String? parent;
   bool? isAvailableAsPoint;
   String? type;
 
-  CityFrom(
+  GetCityFrom(
       {this.id,
       this.name,
       this.fullName,
@@ -134,7 +138,7 @@ class CityFrom {
       this.isAvailableAsPoint,
       this.type});
 
-  CityFrom.fromJson(Map<String, dynamic> json) {
+  GetCityFrom.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     fullName = json['full_name'];

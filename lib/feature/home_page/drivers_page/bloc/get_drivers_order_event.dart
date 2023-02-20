@@ -4,3 +4,7 @@ part of 'get_drivers_order_bloc.dart';
 abstract class GetDriversOrderEvent {}
 
 class GetNewDriversOrderEvent extends GetDriversOrderEvent {}
+
+class GetNewPassengersOrderEvent extends GetDriversOrderEvent {}
+
+class GetAllOrdersEvent extends GetDriversOrderEvent {}

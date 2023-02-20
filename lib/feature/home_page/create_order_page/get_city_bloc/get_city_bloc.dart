@@ -16,6 +16,7 @@ class GetCityBloc extends Bloc<GetCityEvent, GetCityState> {
             GetCitySucces(model: model),
           );
         } catch (e) {
+          print(e);
           emit(GetCityError());
         }
       },

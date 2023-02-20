@@ -1,5 +1,6 @@
 import 'package:driver/core%20/consts/consts.dart';
 import 'package:driver/core%20/theme/app_fonts.dart';
+import 'package:driver/feature/home_page/passengers_page/passengers_page.dart';
 import 'package:driver/feature/splash_screen.dart/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -8,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'create_order_page/create_order_page.dart';
 import 'drivers_page/drivers_page.dart';
+import 'my_orders_page.dart/my_oreders_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,13 +28,8 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> screens = [
     const DriversPage(),
-    const Center(
-      child: Text(
-        '2',
-        style: AppFonts.w700s25,
-      ),
-    ),
-    const CreateOrder()
+    const PassengersPage(),
+    const MyOrdersPage()
   ];
 
   @override
@@ -51,6 +48,17 @@ class _HomePageState extends State<HomePage> {
         automaticallyImplyLeading: false,
       ),
       body: screens[_selectedIndex],
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CreateOrder(),
+            ),
+          );
+        },
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

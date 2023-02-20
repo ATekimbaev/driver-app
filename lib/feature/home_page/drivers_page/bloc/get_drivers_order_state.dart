@@ -10,4 +10,14 @@ class GetDriversOrderSuccess extends GetDriversOrderState {
   GetDriversOrderSuccess({required this.model});
 }
 
+class GetPassengersOrderSuccess extends GetDriversOrderState {
+  final OrderModel model;
+  GetPassengersOrderSuccess({required this.model});
+}
+
+class GetAllOrderSuccess extends GetDriversOrderState {
+  final OrderModel model;
+  GetAllOrderSuccess({required this.model});
+}
+
 class GetDriversOrderError extends GetDriversOrderState {}

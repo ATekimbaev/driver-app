@@ -3,10 +3,10 @@ class CityModel {
   int? totalPages;
   int? limit;
   int? totalCount;
-  List<Results>? results;
+  List<CityFrom>? cityFrom;
 
   CityModel(
-      {this.page, this.totalPages, this.limit, this.totalCount, this.results});
+      {this.page, this.totalPages, this.limit, this.totalCount, this.cityFrom});
 
   CityModel.fromJson(Map<String, dynamic> json) {
     page = json['page'];
@@ -14,9 +14,9 @@ class CityModel {
     limit = json['limit'];
     totalCount = json['total_count'];
     if (json['results'] != null) {
-      results = <Results>[];
+      cityFrom = <CityFrom>[];
       json['results'].forEach((v) {
-        results!.add(new Results.fromJson(v));
+        cityFrom!.add(new CityFrom.fromJson(v));
       });
     }
   }
@@ -27,22 +27,22 @@ class CityModel {
     data['total_pages'] = this.totalPages;
     data['limit'] = this.limit;
     data['total_count'] = this.totalCount;
-    if (this.results != null) {
-      data['results'] = this.results!.map((v) => v.toJson()).toList();
+    if (this.cityFrom != null) {
+      data['results'] = this.cityFrom!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Results {
+class CityFrom {
   String? id;
   String? name;
   String? fullName;
-  Results? parent;
+  String? parent;
   bool? isAvailableAsPoint;
   String? type;
 
-  Results(
+  CityFrom(
       {this.id,
       this.name,
       this.fullName,
@@ -50,7 +50,7 @@ class Results {
       this.isAvailableAsPoint,
       this.type});
 
-  Results.fromJson(Map<String, dynamic> json) {
+  CityFrom.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     fullName = json['full_name'];

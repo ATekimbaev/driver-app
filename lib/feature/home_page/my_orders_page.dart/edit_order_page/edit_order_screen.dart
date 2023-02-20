@@ -2,33 +2,51 @@ import 'package:driver/core%20/theme/app_fonts.dart';
 import 'package:driver/core%20/ui/widgets/custom_button.dart';
 import 'package:driver/core%20/ui/widgets/custom_text_field.dart';
 import 'package:driver/feature/home_page/create_order_page/create_order_bloc/create_order_bloc.dart';
-import 'package:driver/feature/home_page/create_order_page/models/city_model.dart';
 import 'package:driver/feature/home_page/create_order_page/models/order_model.dart';
+import 'package:driver/feature/home_page/drivers_page/models/order_model.dart';
+import 'package:driver/feature/home_page/my_orders_page.dart/edit_order_page/bloc/edit_order_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-import 'get_city_bloc/get_city_bloc.dart';
+import '../../create_order_page/get_city_bloc/get_city_bloc.dart';
+import '../../create_order_page/models/city_model.dart';
 
-class CreateOrder extends StatefulWidget {
-  const CreateOrder({super.key});
+class EditOrder extends StatefulWidget {
+  const EditOrder({super.key, required this.model});
+
+  final UserInfo model;
 
   @override
-  State<CreateOrder> createState() => _CreateOrderState();
+  State<EditOrder> createState() => _EditOrderState();
 }
 
-class _CreateOrderState extends State<CreateOrder> {
+class _EditOrderState extends State<EditOrder> {
   DateTime date = DateTime.now();
+
   List<String> values = ['driver', 'passenger'];
   String dropdownValue = 'driver';
   CityFrom? cityFrom;
   CityFrom? cityTo;
+
   TextEditingController controllerFrom = TextEditingController();
   TextEditingController controllerTo = TextEditingController();
   TextEditingController controllerPrice = TextEditingController(text: '0');
   TextEditingController controllerNote = TextEditingController();
+
+  @override
+  void initState() {
+    controllerFrom.text = widget.model.addressFrom ?? '';
+    controllerTo.text = widget.model.addressTo ?? '';
+    controllerPrice =
+        TextEditingController(text: widget.model.price.toString());
+    controllerNote.text = widget.model.note ?? '';
+    cityFrom = widget.model.getCityFrom as CityFrom?;
+    cityTo = widget.model.getCityto as CityFrom?;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,8 +94,8 @@ class _CreateOrderState extends State<CreateOrder> {
                                             itemBuilder: (context, index) =>
                                                 InkWell(
                                               onTap: () {
-                                                cityFrom =
-                                                    state.model.cityFrom![index];
+                                                cityFrom = state
+                                                    .model.cityFrom![index];
                                                 Navigator.pop(context);
                                                 setState(() {});
                                               },
@@ -114,7 +132,9 @@ class _CreateOrderState extends State<CreateOrder> {
                     );
                   },
                   child: Text(
-                    cityFrom == null ? 'Откуда' : cityFrom?.name ?? '',
+                    cityFrom == null
+                        ? widget.model.getCityFrom?.name ?? ''
+                        : cityFrom?.name ?? '',
                     style: AppFonts.w700s25.copyWith(color: Colors.black),
                   ),
                 );
@@ -147,7 +167,6 @@ class _CreateOrderState extends State<CreateOrder> {
                                 Expanded(
                                   child: BlocBuilder<GetCityBloc, GetCityState>(
                                     builder: (context, state) {
-                                      print(state);
                                       if (state is GetCitySucces) {
                                         if (state.model.cityFrom!.isNotEmpty) {
                                           return ListView.builder(
@@ -157,8 +176,8 @@ class _CreateOrderState extends State<CreateOrder> {
                                             itemBuilder: (context, index) =>
                                                 InkWell(
                                               onTap: () {
-                                                cityTo =
-                                                    state.model.cityFrom![index];
+                                                cityTo = state
+                                                    .model.cityFrom![index];
                                                 Navigator.pop(context);
                                                 setState(() {});
                                               },
@@ -195,7 +214,9 @@ class _CreateOrderState extends State<CreateOrder> {
                     );
                   },
                   child: Text(
-                    cityTo == null ? 'Куда' : cityTo?.name ?? '',
+                    cityTo == null
+                        ? widget.model.getCityto?.name ?? ''
+                        : cityTo?.name ?? '',
                     style: AppFonts.w700s25.copyWith(color: Colors.black),
                   ),
                 );
@@ -267,8 +288,9 @@ class _CreateOrderState extends State<CreateOrder> {
                 },
                 child: CustomButton(
                     onPressed: () {
-                      BlocProvider.of<CreateOrderBloc>(context).add(
-                        CreateNewOrederEvent(
+                      BlocProvider.of<EditOrderBloc>(context).add(
+                        SendNewDataEvent(
+                          id: widget.model.id ?? '',
                           model: SendOrderModel(
                             note: controllerNote.text,
                             addressFrom: controllerFrom.text,

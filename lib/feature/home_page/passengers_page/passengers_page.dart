@@ -5,13 +5,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DriversPage extends StatelessWidget {
-  const DriversPage({super.key});
+class PassengersPage extends StatelessWidget {
+  const PassengersPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<GetDriversOrderBloc>(context)
-        .add(GetNewDriversOrderEvent());
+        .add(GetNewPassengersOrderEvent());
     return Center(
       child: Column(
         children: [
@@ -22,14 +22,14 @@ class DriversPage extends StatelessWidget {
           Expanded(
             child: BlocBuilder<GetDriversOrderBloc, GetDriversOrderState>(
               builder: (context, state) {
-                if (state is GetDriversOrderSuccess) {
+                if (state is GetPassengersOrderSuccess) {
                   return ListView.builder(
                     itemCount: state.model.userInfo?.length,
                     itemBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Colors.green,
                           border: Border.all(width: 5),
                         ),
                         child: Column(
@@ -37,7 +37,7 @@ class DriversPage extends StatelessWidget {
                             Text(state.model.userInfo?[index].user?.name ?? ''),
                             Text(state
                                     .model.userInfo?[index].getCityFrom?.name ??
-                                ''),
+                                'userInfo'),
                             Text(
                                 state.model.userInfo?[index].addressFrom ?? ''),
                             Text(state.model.userInfo?[index].getCityto?.name ??
