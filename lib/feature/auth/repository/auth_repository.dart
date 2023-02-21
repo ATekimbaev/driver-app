@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:driver/core%20/consts/consts.dart';
 import 'package:driver/feature/registration/models/token_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../core /consts/consts_data.dart';
 
 class AuthRepository {
   final Dio dio;

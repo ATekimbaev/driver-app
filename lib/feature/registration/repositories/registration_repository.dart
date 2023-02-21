@@ -3,7 +3,7 @@ import 'package:driver/feature/registration/models/token_model.dart';
 import 'package:driver/feature/registration/models/user_info_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core /consts/consts.dart';
+import '../../../core /consts/consts_data.dart';
 
 class RegistrationRepository {
   final Dio dio;

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:driver/core%20/consts/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../core /consts/consts_data.dart';
 
 class SetUsersDataRepository {
   final Dio dio;

@@ -1,10 +1,11 @@
-import 'package:driver/core%20/consts/consts.dart';
 import 'package:driver/feature/auth/auth_screen.dart';
 import 'package:driver/feature/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../core /consts/consts_data.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

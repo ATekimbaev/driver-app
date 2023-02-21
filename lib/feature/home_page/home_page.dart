@@ -1,4 +1,3 @@
-import 'package:driver/core%20/consts/consts.dart';
 import 'package:driver/core%20/theme/app_fonts.dart';
 import 'package:driver/feature/home_page/passengers_page/passengers_page.dart';
 import 'package:driver/feature/splash_screen.dart/splash_screen.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core /consts/consts_data.dart';
 import 'create_order_page/create_order_page.dart';
 import 'drivers_page/drivers_page.dart';
 import 'my_orders_page.dart/my_oreders_page.dart';

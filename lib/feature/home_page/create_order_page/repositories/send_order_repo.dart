@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:driver/core%20/consts/consts_data.dart';
 import 'package:driver/feature/home_page/create_order_page/models/order_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../../core /consts/consts.dart';
 
 class SendOrderRepository {
   final Dio dio;
