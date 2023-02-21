@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:driver/feature/home_page/drivers_page/models/order_model.dart';
+import 'package:driver/feature/home_page/drivers_page/models/order_model/order_model.dart';
 import 'package:driver/feature/home_page/drivers_page/repository/oreders_repository.dart';
 import 'package:meta/meta.dart';
 

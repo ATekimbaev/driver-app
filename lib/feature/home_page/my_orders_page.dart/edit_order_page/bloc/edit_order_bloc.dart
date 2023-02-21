@@ -18,6 +18,17 @@ class EditOrderBloc extends Bloc<EditOrderEvent, EditOrderState> {
         emit(EditOrderError());
       }
     });
+    on<DeleteOrder>((event, emit) async {
+      try {
+        await repo.deleteOrder(
+          id: event.id,
+        );
+        emit(EditOrderSucces());
+      } catch (e) {
+        print(e);
+        emit(EditOrderError());
+      }
+    });
   }
   final EditOredrRepo repo;
 }

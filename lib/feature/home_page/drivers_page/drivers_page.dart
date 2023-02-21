@@ -24,7 +24,7 @@ class DriversPage extends StatelessWidget {
               builder: (context, state) {
                 if (state is GetDriversOrderSuccess) {
                   return ListView.builder(
-                    itemCount: state.model.userInfo?.length,
+                    itemCount: state.model.orderInfo?.length,
                     itemBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Container(
@@ -34,20 +34,22 @@ class DriversPage extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            Text(state.model.userInfo?[index].user?.name ?? ''),
-                            Text(state
-                                    .model.userInfo?[index].getCityFrom?.name ??
+                            Text(
+                                state.model.orderInfo?[index].user?.name ?? ''),
+                            Text(state.model.orderInfo?[index].getCityFrom
+                                    ?.name ??
+                                ''),
+                            Text(state.model.orderInfo?[index].addressFrom ??
                                 ''),
                             Text(
-                                state.model.userInfo?[index].addressFrom ?? ''),
-                            Text(state.model.userInfo?[index].getCityto?.name ??
-                                ''),
-                            Text(state.model.userInfo?[index].addressTo ?? ''),
-                            Text(
-                                state.model.userInfo?[index].price.toString() ??
+                                state.model.orderInfo?[index].getCityto?.name ??
                                     ''),
-                            Text(state.model.userInfo?[index].note ?? ''),
-                            Text(state.model.userInfo?[index].date ?? ''),
+                            Text(state.model.orderInfo?[index].addressTo ?? ''),
+                            Text(state.model.orderInfo?[index].price
+                                    .toString() ??
+                                ''),
+                            Text(state.model.orderInfo?[index].note ?? ''),
+                            Text(state.model.orderInfo?[index].date ?? ''),
                           ],
                         ),
                       ),

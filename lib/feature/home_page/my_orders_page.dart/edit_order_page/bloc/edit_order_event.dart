@@ -9,3 +9,9 @@ class SendNewDataEvent extends EditOrderEvent {
 
   SendNewDataEvent({required this.model, required this.id});
 }
+
+class DeleteOrder extends EditOrderEvent {
+  final String id;
+
+  DeleteOrder({required this.id});
+}

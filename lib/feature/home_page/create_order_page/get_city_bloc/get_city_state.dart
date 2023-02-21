@@ -6,7 +6,7 @@ abstract class GetCityState {}
 class GetCityInitial extends GetCityState {}
 
 class GetCitySucces extends GetCityState {
-  final CityModel model;
+  final List<CityDetails> model;
   GetCitySucces({required this.model});
 }
 

@@ -2,7 +2,8 @@ import 'package:driver/core%20/theme/app_fonts.dart';
 import 'package:driver/core%20/ui/widgets/custom_button.dart';
 import 'package:driver/core%20/ui/widgets/custom_text_field.dart';
 import 'package:driver/feature/home_page/create_order_page/create_order_bloc/create_order_bloc.dart';
-import 'package:driver/feature/home_page/create_order_page/models/city_model.dart';
+import 'package:driver/feature/home_page/create_order_page/models/city_model/city_details.dart';
+import 'package:driver/feature/home_page/create_order_page/models/city_model/city_model.dart';
 import 'package:driver/feature/home_page/create_order_page/models/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -20,17 +21,24 @@ class CreateOrder extends StatefulWidget {
 }
 
 class _CreateOrderState extends State<CreateOrder> {
+  final controller = ScrollController();
   DateTime date = DateTime.now();
   List<String> values = ['driver', 'passenger'];
   String dropdownValue = 'driver';
-  CityFrom? cityFrom;
-  CityFrom? cityTo;
+  CityDetails? cityFrom;
+  CityDetails? cityTo;
   TextEditingController controllerFrom = TextEditingController();
   TextEditingController controllerTo = TextEditingController();
   TextEditingController controllerPrice = TextEditingController(text: '0');
   TextEditingController controllerNote = TextEditingController();
+  bool isLoading = false;
+  int page = 0;
+
   @override
   Widget build(BuildContext context) {
+    controller.addListener(() {
+      pagination(context);
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Создать заказ'),
@@ -67,17 +75,15 @@ class _CreateOrderState extends State<CreateOrder> {
                                   child: BlocBuilder<GetCityBloc, GetCityState>(
                                     builder: (context, state) {
                                       if (state is GetCitySucces) {
-                                        if (state.model.cityFrom!.isNotEmpty) {
+                                        if (state.model.isNotEmpty) {
                                           return ListView.builder(
-                                            controller: ScrollController(),
+                                            controller: controller,
                                             shrinkWrap: true,
-                                            itemCount:
-                                                state.model.cityFrom?.length,
+                                            itemCount: state.model.length,
                                             itemBuilder: (context, index) =>
                                                 InkWell(
                                               onTap: () {
-                                                cityFrom =
-                                                    state.model.cityFrom![index];
+                                                cityFrom = state.model[index];
                                                 Navigator.pop(context);
                                                 setState(() {});
                                               },
@@ -85,8 +91,7 @@ class _CreateOrderState extends State<CreateOrder> {
                                                 padding:
                                                     const EdgeInsets.all(25.0),
                                                 child: Text(
-                                                  state.model.cityFrom?[index]
-                                                          .name ??
+                                                  state.model[index].name ??
                                                       'Ничго нет',
                                                 ),
                                               ),
@@ -147,18 +152,15 @@ class _CreateOrderState extends State<CreateOrder> {
                                 Expanded(
                                   child: BlocBuilder<GetCityBloc, GetCityState>(
                                     builder: (context, state) {
-                                      print(state);
                                       if (state is GetCitySucces) {
-                                        if (state.model.cityFrom!.isNotEmpty) {
+                                        if (state.model.isNotEmpty) {
                                           return ListView.builder(
                                             shrinkWrap: true,
-                                            itemCount:
-                                                state.model.cityFrom?.length,
+                                            itemCount: state.model.length,
                                             itemBuilder: (context, index) =>
                                                 InkWell(
                                               onTap: () {
-                                                cityTo =
-                                                    state.model.cityFrom![index];
+                                                cityTo = state.model[index];
                                                 Navigator.pop(context);
                                                 setState(() {});
                                               },
@@ -166,8 +168,7 @@ class _CreateOrderState extends State<CreateOrder> {
                                                 padding:
                                                     const EdgeInsets.all(25.0),
                                                 child: Text(
-                                                  state.model.cityFrom?[index]
-                                                          .name ??
+                                                  state.model[index].name ??
                                                       'Ничго нет',
                                                 ),
                                               ),
@@ -289,5 +290,22 @@ class _CreateOrderState extends State<CreateOrder> {
         ),
       ),
     );
+  }
+
+  void pagination(BuildContext context) {
+    if (isLoading) {
+      return;
+    }
+
+    isLoading = true;
+
+    if (controller.position.pixels == controller.position.maxScrollExtent) {
+      page++;
+      BlocProvider.of<GetCityBloc>(context).add(
+        GetCityListEvent(page: page),
+      );
+    } else {}
+
+    isLoading = false;
   }
 }

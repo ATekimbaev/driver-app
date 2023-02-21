@@ -5,5 +5,6 @@ abstract class GetCityEvent {}
 
 class GetCityListEvent extends GetCityEvent {
   final String? cityName;
-  GetCityListEvent({this.cityName});
+  final int? page;
+  GetCityListEvent({this.cityName, this.page});
 }

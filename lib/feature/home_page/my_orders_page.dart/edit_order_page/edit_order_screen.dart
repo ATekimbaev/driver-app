@@ -2,8 +2,9 @@ import 'package:driver/core%20/theme/app_fonts.dart';
 import 'package:driver/core%20/ui/widgets/custom_button.dart';
 import 'package:driver/core%20/ui/widgets/custom_text_field.dart';
 import 'package:driver/feature/home_page/create_order_page/create_order_bloc/create_order_bloc.dart';
+import 'package:driver/feature/home_page/create_order_page/models/city_model/city_details.dart';
 import 'package:driver/feature/home_page/create_order_page/models/order_model.dart';
-import 'package:driver/feature/home_page/drivers_page/models/order_model.dart';
+import 'package:driver/feature/home_page/drivers_page/models/order_model/order_model.dart';
 import 'package:driver/feature/home_page/my_orders_page.dart/edit_order_page/bloc/edit_order_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -11,12 +12,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import '../../create_order_page/get_city_bloc/get_city_bloc.dart';
-import '../../create_order_page/models/city_model.dart';
+import '../../create_order_page/models/city_model/city_model.dart';
+import '../../drivers_page/models/order_model/user_info.dart';
 
 class EditOrder extends StatefulWidget {
   const EditOrder({super.key, required this.model});
 
-  final UserInfo model;
+  final OrderInfo model;
 
   @override
   State<EditOrder> createState() => _EditOrderState();
@@ -27,8 +29,8 @@ class _EditOrderState extends State<EditOrder> {
 
   List<String> values = ['driver', 'passenger'];
   String dropdownValue = 'driver';
-  CityFrom? cityFrom;
-  CityFrom? cityTo;
+  CityDetails? cityFrom;
+  CityDetails? cityTo;
 
   TextEditingController controllerFrom = TextEditingController();
   TextEditingController controllerTo = TextEditingController();
@@ -42,8 +44,8 @@ class _EditOrderState extends State<EditOrder> {
     controllerPrice =
         TextEditingController(text: widget.model.price.toString());
     controllerNote.text = widget.model.note ?? '';
-    cityFrom = widget.model.getCityFrom as CityFrom?;
-    cityTo = widget.model.getCityto as CityFrom?;
+    cityFrom = widget.model.getCityFrom;
+    cityTo = widget.model.getCityto;
     super.initState();
   }
 
@@ -85,17 +87,15 @@ class _EditOrderState extends State<EditOrder> {
                                   child: BlocBuilder<GetCityBloc, GetCityState>(
                                     builder: (context, state) {
                                       if (state is GetCitySucces) {
-                                        if (state.model.cityFrom!.isNotEmpty) {
+                                        if (state.model.isNotEmpty) {
                                           return ListView.builder(
                                             controller: ScrollController(),
                                             shrinkWrap: true,
-                                            itemCount:
-                                                state.model.cityFrom?.length,
+                                            itemCount: state.model.length,
                                             itemBuilder: (context, index) =>
                                                 InkWell(
                                               onTap: () {
-                                                cityFrom = state
-                                                    .model.cityFrom![index];
+                                                cityFrom = state.model[index];
                                                 Navigator.pop(context);
                                                 setState(() {});
                                               },
@@ -103,8 +103,7 @@ class _EditOrderState extends State<EditOrder> {
                                                 padding:
                                                     const EdgeInsets.all(25.0),
                                                 child: Text(
-                                                  state.model.cityFrom?[index]
-                                                          .name ??
+                                                  state.model[index].name ??
                                                       'Ничго нет',
                                                 ),
                                               ),
@@ -168,16 +167,14 @@ class _EditOrderState extends State<EditOrder> {
                                   child: BlocBuilder<GetCityBloc, GetCityState>(
                                     builder: (context, state) {
                                       if (state is GetCitySucces) {
-                                        if (state.model.cityFrom!.isNotEmpty) {
+                                        if (state.model.isNotEmpty) {
                                           return ListView.builder(
                                             shrinkWrap: true,
-                                            itemCount:
-                                                state.model.cityFrom?.length,
+                                            itemCount: state.model.length,
                                             itemBuilder: (context, index) =>
                                                 InkWell(
                                               onTap: () {
-                                                cityTo = state
-                                                    .model.cityFrom![index];
+                                                cityTo = state.model[index];
                                                 Navigator.pop(context);
                                                 setState(() {});
                                               },
@@ -185,8 +182,7 @@ class _EditOrderState extends State<EditOrder> {
                                                 padding:
                                                     const EdgeInsets.all(25.0),
                                                 child: Text(
-                                                  state.model.cityFrom?[index]
-                                                          .name ??
+                                                  state.model[index].name ??
                                                       'Ничго нет',
                                                 ),
                                               ),
@@ -215,8 +211,8 @@ class _EditOrderState extends State<EditOrder> {
                   },
                   child: Text(
                     cityTo == null
-                        ? widget.model.getCityto?.name ?? ''
-                        : cityTo?.name ?? '',
+                        ? widget.model.getCityto?.name ?? 'Куда'
+                        : cityTo?.name ?? 'Куда',
                     style: AppFonts.w700s25.copyWith(color: Colors.black),
                   ),
                 );
@@ -298,13 +294,13 @@ class _EditOrderState extends State<EditOrder> {
                             price: int.parse(controllerPrice.text),
                             date: date.toString(),
                             type: dropdownValue,
-                            cityFrom: cityTo?.id ?? '',
-                            cityTo: cityFrom?.id ?? '',
+                            cityFrom: cityFrom?.id ?? '',
+                            cityTo: cityTo?.id ?? '',
                           ),
                         ),
                       );
                     },
-                    title: 'Создать'),
+                    title: 'Изменить'),
               )
             ],
           ),
