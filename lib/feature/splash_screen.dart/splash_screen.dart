@@ -5,7 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../core /consts/consts_data.dart';
+import '../../core_data/consts_data/consts_data.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

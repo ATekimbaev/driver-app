@@ -3,8 +3,6 @@ import 'package:driver/feature/registration/models/token_model.dart';
 import 'package:driver/feature/registration/models/user_info_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core /consts/consts_data.dart';
-
 class RegistrationRepository {
   final Dio dio;
   RegistrationRepository({required this.dio});
@@ -18,18 +16,18 @@ class RegistrationRepository {
     final result = TokenModel.fromJson(response.data);
     await prefs.setString('accessToken', result.access ?? '');
     await prefs.setString('refreshToken', result.refresh ?? '');
-    final userInfo = await dio.get(
-      'accounts/me/',
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer ${prefs.getString(AppConsts.accesToken)}',
-        },
-      ),
-    );
-    final UserInfoModel userInfoData = UserInfoModel.fromJson(userInfo.data);
+
+    UserInfoModel userInfoData = await getMe();
 
     await prefs.setString('id', userInfoData.id ?? '');
 
     return result;
+  }
+
+  Future<UserInfoModel> getMe() async {
+    final userInfo = await dio.get(
+      'accounts/me/',
+    );
+    return UserInfoModel.fromJson(userInfo.data);
   }
 }

@@ -1,6 +1,6 @@
-import 'package:driver/core%20/theme/app_fonts.dart';
-import 'package:driver/core%20/ui/widgets/custom_button.dart';
-import 'package:driver/core%20/ui/widgets/custom_text_field.dart';
+import 'package:driver/core_data/theme/app_fonts.dart';
+import 'package:driver/core_data/ui/widgets/custom_button.dart';
+import 'package:driver/core_data/ui/widgets/custom_text_field.dart';
 import 'package:driver/feature/home_page/create_order_page/create_order_bloc/create_order_bloc.dart';
 import 'package:driver/feature/home_page/create_order_page/models/city_model/city_details.dart';
 import 'package:driver/feature/home_page/create_order_page/models/order_model.dart';
@@ -31,6 +31,10 @@ class _EditOrderState extends State<EditOrder> {
   String dropdownValue = 'driver';
   CityDetails? cityFrom;
   CityDetails? cityTo;
+
+  ScrollController controller = ScrollController();
+  bool isLoading = false;
+  int page = 0;
 
   TextEditingController controllerFrom = TextEditingController();
   TextEditingController controllerTo = TextEditingController();
@@ -66,7 +70,7 @@ class _EditOrderState extends State<EditOrder> {
                 return TextButton(
                   onPressed: () {
                     BlocProvider.of<GetCityBloc>(context)
-                        .add(GetCityListEvent());
+                        .add(GetCityListEvent(cityName: controllerFrom.text));
                     showBottomSheet(
                       context: context,
                       builder: (context) {
@@ -89,7 +93,7 @@ class _EditOrderState extends State<EditOrder> {
                                       if (state is GetCitySucces) {
                                         if (state.model.isNotEmpty) {
                                           return ListView.builder(
-                                            controller: ScrollController(),
+                                            controller: controller,
                                             shrinkWrap: true,
                                             itemCount: state.model.length,
                                             itemBuilder: (context, index) =>
@@ -146,7 +150,7 @@ class _EditOrderState extends State<EditOrder> {
                 return TextButton(
                   onPressed: () {
                     BlocProvider.of<GetCityBloc>(context)
-                        .add(GetCityListEvent());
+                        .add(GetCityListEvent(cityName: controllerTo.text));
                     showBottomSheet(
                       context: context,
                       builder: (context) {
@@ -169,6 +173,7 @@ class _EditOrderState extends State<EditOrder> {
                                       if (state is GetCitySucces) {
                                         if (state.model.isNotEmpty) {
                                           return ListView.builder(
+                                            controller: controller,
                                             shrinkWrap: true,
                                             itemCount: state.model.length,
                                             itemBuilder: (context, index) =>
@@ -307,5 +312,36 @@ class _EditOrderState extends State<EditOrder> {
         ),
       ),
     );
+  }
+
+  void pagination(BuildContext context) {
+    if (isLoading) {
+      return;
+    }
+
+    isLoading = true;
+
+    if (controller.position.pixels == controller.position.maxScrollExtent) {
+      page++;
+      BlocProvider.of<GetCityBloc>(context).add(
+        GetCityListEvent(
+          page: page,
+          cityName: controllerFrom.text,
+        ),
+      );
+    } else {}
+
+    isLoading = false;
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(() {});
+    controllerFrom;
+    controllerNote;
+    controllerPrice;
+    controllerTo;
+
+    super.dispose();
   }
 }

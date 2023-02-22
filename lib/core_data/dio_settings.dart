@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:driver/core_data/consts_data/consts_data.dart';
+import 'package:driver/feature/registration/models/token_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,7 +24,30 @@ class DioSettings {
   void setup() async {
     final interceptors = dio.interceptors;
 
+    final prefs = await SharedPreferences.getInstance();
+
     interceptors.clear();
+
+    interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          options.headers['Authorization'] =
+              'Bearer ${prefs.getString(AppConsts.accesToken)}';
+
+          return handler.next(options);
+        },
+        onError: (e, handler) async {
+          if (e.response?.statusCode == 401) {
+            final response = await dio.post('accounts/refresh/',
+                data: {"refresh": prefs.getString(AppConsts.refreshToken)});
+            final result = TokenModel.fromJson(response.data);
+            prefs.setString(AppConsts.accesToken, result.access ?? '');
+            prefs.setString(AppConsts.refreshToken, result.refresh ?? '');
+            return handler.resolve(response);
+          }
+        },
+      ),
+    );
 
     final logInterceptor = LogInterceptor(
       request: true,

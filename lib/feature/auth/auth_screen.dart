@@ -1,6 +1,6 @@
-import 'package:driver/core%20/theme/app_fonts.dart';
-import 'package:driver/core%20/ui/widgets/custom_button.dart';
-import 'package:driver/core%20/ui/widgets/custom_text_field.dart';
+import 'package:driver/core_data/theme/app_fonts.dart';
+import 'package:driver/core_data/ui/widgets/custom_button.dart';
+import 'package:driver/core_data/ui/widgets/custom_text_field.dart';
 import 'package:driver/feature/auth/bloc/auth_bloc.dart';
 import 'package:driver/feature/home_page/home_page.dart';
 import 'package:driver/feature/registration/registration_screen.dart';

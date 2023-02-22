@@ -12,11 +12,24 @@ class GetCityBloc extends Bloc<GetCityEvent, GetCityState> {
   GetCityBloc({required this.repo}) : super(GetCityInitial()) {
     on<GetCityListEvent>(
       (event, emit) async {
+        emit(GetCityLoading());
+
         try {
+          if (cityName != event.cityName) {
+            cityName = event.cityName;
+            items = [];
+            page = 0;
+            print('${event.cityName}, qweqwopeklajdfls');
+          }
+          page++;
+
           final model = await repo.getCityList(
             event.cityName,
-            event.page,
+            page,
           );
+
+          totalPage = model.totalPages ?? 1;
+
           items.addAll(
             model.cityDetails?.toList() ?? [],
           );
@@ -30,6 +43,9 @@ class GetCityBloc extends Bloc<GetCityEvent, GetCityState> {
       },
     );
   }
-  final List<CityDetails> items = [];
+  List<CityDetails> items = [];
   final GetCityRepo repo;
+  int page = 0;
+  int totalPage = 1;
+  String cityName = '';
 }

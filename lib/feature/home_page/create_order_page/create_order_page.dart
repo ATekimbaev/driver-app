@@ -1,6 +1,6 @@
-import 'package:driver/core%20/theme/app_fonts.dart';
-import 'package:driver/core%20/ui/widgets/custom_button.dart';
-import 'package:driver/core%20/ui/widgets/custom_text_field.dart';
+import 'package:driver/core_data/theme/app_fonts.dart';
+import 'package:driver/core_data/ui/widgets/custom_button.dart';
+import 'package:driver/core_data/ui/widgets/custom_text_field.dart';
 import 'package:driver/feature/home_page/create_order_page/create_order_bloc/create_order_bloc.dart';
 import 'package:driver/feature/home_page/create_order_page/models/city_model/city_details.dart';
 import 'package:driver/feature/home_page/create_order_page/models/city_model/city_model.dart';
@@ -27,7 +27,7 @@ class _CreateOrderState extends State<CreateOrder> {
   String dropdownValue = 'driver';
   CityDetails? cityFrom;
   CityDetails? cityTo;
-  TextEditingController controllerFrom = TextEditingController();
+  TextEditingController controllerFrom = TextEditingController(text: '');
   TextEditingController controllerTo = TextEditingController();
   TextEditingController controllerPrice = TextEditingController(text: '0');
   TextEditingController controllerNote = TextEditingController();
@@ -39,6 +39,7 @@ class _CreateOrderState extends State<CreateOrder> {
     controller.addListener(() {
       pagination(context);
     });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Создать заказ'),
@@ -54,7 +55,7 @@ class _CreateOrderState extends State<CreateOrder> {
                 return TextButton(
                   onPressed: () {
                     BlocProvider.of<GetCityBloc>(context)
-                        .add(GetCityListEvent());
+                        .add(GetCityListEvent(cityName: controllerFrom.text));
                     showBottomSheet(
                       context: context,
                       builder: (context) {
@@ -74,6 +75,10 @@ class _CreateOrderState extends State<CreateOrder> {
                                 Expanded(
                                   child: BlocBuilder<GetCityBloc, GetCityState>(
                                     builder: (context, state) {
+                                      if (state is GetCityLoading) {
+                                        return const CircularProgressIndicator
+                                            .adaptive();
+                                      }
                                       if (state is GetCitySucces) {
                                         if (state.model.isNotEmpty) {
                                           return ListView.builder(
@@ -132,7 +137,7 @@ class _CreateOrderState extends State<CreateOrder> {
                 return TextButton(
                   onPressed: () {
                     BlocProvider.of<GetCityBloc>(context)
-                        .add(GetCityListEvent());
+                        .add(GetCityListEvent(cityName: controllerFrom.text));
                     showBottomSheet(
                       context: context,
                       builder: (context) {
@@ -155,6 +160,7 @@ class _CreateOrderState extends State<CreateOrder> {
                                       if (state is GetCitySucces) {
                                         if (state.model.isNotEmpty) {
                                           return ListView.builder(
+                                            controller: controller,
                                             shrinkWrap: true,
                                             itemCount: state.model.length,
                                             itemBuilder: (context, index) =>
@@ -302,10 +308,24 @@ class _CreateOrderState extends State<CreateOrder> {
     if (controller.position.pixels == controller.position.maxScrollExtent) {
       page++;
       BlocProvider.of<GetCityBloc>(context).add(
-        GetCityListEvent(page: page),
+        GetCityListEvent(
+          page: page,
+          cityName: controllerFrom.text,
+        ),
       );
     } else {}
 
     isLoading = false;
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(() {});
+    controllerFrom;
+    controllerNote;
+    controllerPrice;
+    controllerTo;
+
+    super.dispose();
   }
 }

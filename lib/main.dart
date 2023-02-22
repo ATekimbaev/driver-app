@@ -1,4 +1,4 @@
-import 'package:driver/core%20/dio_settings.dart';
+import 'package:driver/core_data/dio_settings.dart';
 import 'package:driver/feature/auth/bloc/auth_bloc.dart';
 import 'package:driver/feature/auth/repository/auth_repository.dart';
 import 'package:driver/feature/home_page/create_order_page/create_order_bloc/create_order_bloc.dart';
@@ -8,6 +8,7 @@ import 'package:driver/feature/home_page/drivers_page/bloc/get_drivers_order_blo
 import 'package:driver/feature/home_page/drivers_page/repository/oreders_repository.dart';
 import 'package:driver/feature/home_page/my_orders_page.dart/edit_order_page/bloc/edit_order_bloc.dart';
 import 'package:driver/feature/home_page/my_orders_page.dart/edit_order_page/repo/edit_order_repo.dart';
+import 'package:driver/feature/home_page/settings_page/bloc/settings_bloc.dart';
 import 'package:driver/feature/registration/bloc/registration_bloc.dart';
 import 'package:driver/feature/registration/repositories/registration_repository.dart';
 import 'package:driver/feature/set_users_data/bloc/set_users_data_bloc.dart';
@@ -112,10 +113,15 @@ class MyApp extends StatelessWidget {
               repo: RepositoryProvider.of<EditOredrRepo>(context),
             ),
           ),
+          BlocProvider(
+            create: (context) => SettingsBloc(
+              repo: RepositoryProvider.of<RegistrationRepository>(context),
+            ),
+          ),
         ],
         child: MaterialApp(
           theme: ThemeData(
-            textTheme: GoogleFonts.ibmPlexMonoTextTheme(),
+            fontFamily: 'SFProDisplay',
           ),
           home: const SplashScreen(),
         ),

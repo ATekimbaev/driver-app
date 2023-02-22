@@ -1,4 +1,4 @@
-import 'package:driver/core%20/theme/app_fonts.dart';
+import 'package:driver/core_data/theme/app_fonts.dart';
 import 'package:driver/feature/home_page/drivers_page/bloc/get_drivers_order_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
