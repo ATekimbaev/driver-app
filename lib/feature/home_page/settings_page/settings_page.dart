@@ -36,51 +36,52 @@ class _ChangeUsersDataScreenState extends State<ChangeUsersDataScreen> {
         }
       },
       child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Изменить данные'),
-          ),
-          body: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(height: 50),
-                  const Text(
-                    'Изменить данные',
-                    style: AppFonts.w700s25,
-                    textAlign: TextAlign.center,
-                  ),
-                  CustomTextField(
-                    controller: controllerLogin,
-                    hintText: 'userName',
-                  ),
-                  CustomTextField(
-                    controller: controllerName,
-                    hintText: 'name',
-                    errorText: errorText,
-                  ),
-                  CustomButton(
-                      onPressed: () {
-                        try {
-                          RepositoryProvider.of<SetUsersDataRepository>(context)
-                              .setUserName(
-                                  name: controllerName.text,
-                                  userName: controllerName.text);
-                          errorText = null;
-                        } catch (e) {
-                          errorText = e.toString();
-                        }
-                        setState(() {});
-                      },
-                      title: 'Изменить'),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                ],
-              ),
+        appBar: AppBar(
+          title: const Text('Изменить данные'),
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(height: 50),
+                const Text(
+                  'Изменить данные',
+                  style: AppFonts.w700s25,
+                  textAlign: TextAlign.center,
+                ),
+                CustomTextField(
+                  controller: controllerLogin,
+                  hintText: 'userName',
+                ),
+                CustomTextField(
+                  controller: controllerName,
+                  hintText: 'name',
+                  errorText: errorText,
+                ),
+                CustomButton(
+                    onPressed: () {
+                      try {
+                        RepositoryProvider.of<SetUsersDataRepository>(context)
+                            .setUserName(
+                                name: controllerName.text,
+                                userName: controllerName.text);
+                        errorText = null;
+                      } catch (e) {
+                        errorText = e.toString();
+                      }
+                      setState(() {});
+                    },
+                    title: 'Изменить'),
+                const SizedBox(
+                  height: 50,
+                ),
+              ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }
